@@ -22,7 +22,9 @@ bool check_collinear(std::vector<Point<T>>& points) {
 
 template <typename T>
 std::vector<Point<T>> convex_hull_standard(std::vector<Point<T>>& points) {
-    std::sort(points.begin(), points.end());
+    std::sort(points.begin(), points.end(), 
+                [](const Point<T>& p1, const Point<T>& p2) { 
+                    return p1.x == p2.x ? p1.y < p2.y : p1.x < p2.x;});
 
     if (check_collinear(points))
         return points;
@@ -34,8 +36,9 @@ std::vector<Point<T>> convex_hull_standard(std::vector<Point<T>>& points) {
         hull.emplace_back(point); 
     }
 
+
     int k = hull.size();
-    for (int i = points.size() - 1; i > 0; i --) { // constructing the upper hull
+    for (int i = points.size() - 2; i > 0; i --) { // constructing the upper hull
         while (hull.size() >= k + 1 && 
                 ccw(hull[hull.size()-2], hull[hull.size()-1], points[i]) > 0)
                     hull.pop_back();

@@ -23,10 +23,13 @@ std::vector<Point<int>> load_points_from_txt(std::filesystem::path file_path) {
 int main() {
 
     std::vector<Point<int>> pts = load_points_from_txt("tests/1_in.txt");
+    //std::vector<Point<int>> pts = load_points_from_txt("tests/3_in.txt");
     std::vector<Point<int>> hull = convex_hull_standard<int>(pts);
 
-    //for (auto& pt: hull)
-    //    std::cout << pt.x << " " << pt.y << std::endl;
+    std::ofstream file("out.txt");
+    for (auto& pt: hull)
+        file << '[' << pt.x << ',' << pt.y << ']' << ',';
 
+    file.close();
     return 0;
 }
